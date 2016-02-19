@@ -1,6 +1,6 @@
 import test from 'ava'
 import { createStore } from 'redux'
-import { Reaction, exportActions, importActions } from './redux-reaction'
+import { Reaction, groupActions, packageActions } from './redux-reaction'
 
 test('create store with one action', t => {
   const initialState = { test: false }
@@ -9,9 +9,9 @@ test('create store with one action', t => {
     reducer: (state, action) => ({ test: true })
   })
 
-  let testActions = exportActions({ testAction }, initialState)
+  let testActions = groupActions({ testAction }, initialState)
 
-  let re = importActions({ testActions })
+  let re = packageActions({ testActions })
   let store = createStore(re.ducer)
   let { actions } = re.action(store.dispatch)
 
@@ -31,9 +31,9 @@ test('create store with two actions', t => {
     reducer: (state, action) => ({ test: false })
   })
 
-  let AB = exportActions({ A, B }, initialState)
+  let AB = groupActions({ A, B }, initialState)
 
-  let re = importActions({ AB })
+  let re = packageActions({ AB })
   let store = createStore(re.ducer)
   let { actions } = re.action(store.dispatch)
 
@@ -58,10 +58,10 @@ test('create store with two exported actions', t => {
     reducer: (state, action) => ({ test: false })
   })
 
-  let AA = exportActions({ A }, initialStateA)
-  let BB = exportActions({ B }, initialStateB)
+  let AA = groupActions({ A }, initialStateA)
+  let BB = groupActions({ B }, initialStateB)
 
-  let re = importActions({ AA, BB })
+  let re = packageActions({ AA, BB })
   let store = createStore(re.ducer)
   let { actions } = re.action(store.dispatch)
 

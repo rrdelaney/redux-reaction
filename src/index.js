@@ -9,7 +9,7 @@ export function Reaction (name, { action = undefined, reducer }) {
   }
 }
 
-export function exportActions (creators, initialState) {
+export function groupActions (creators, initialState) {
   let reducers = {}
   let actions = {}
 
@@ -24,7 +24,7 @@ export function exportActions (creators, initialState) {
   }
 }
 
-export function importActions (creators) {
+export function packageActions (creators) {
   const _actions = Object.keys(creators)
     .map(c => creators[c].actions)
     .reduce((prev, next) => ({ ...prev, ...next }), {})
