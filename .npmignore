@@ -1,0 +1,6 @@
+src/
+examples/
+.babelrc
+.gitignore
+test.js
+redux-reaction/
