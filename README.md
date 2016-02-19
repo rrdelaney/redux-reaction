@@ -52,16 +52,22 @@ const selector = state => state
 
 @connect(selector, re.action)
 export default class App extends Component {
-  constructor () {
+  constructor (props, context) {
+    super(props, context)
+    
     this.state = {
       text: ''
     }
   }
   
-  handleText (target) {
+  handleText (event) {
     this.setState({
-      text: target.value
+      text: event.target.value
     })
+  }
+  
+  addTodo () {
+    this.props.actions.addTodo(this.state.text)
   }
 
   render () {
@@ -71,9 +77,10 @@ export default class App extends Component {
       <ul>
         {todo.todos.map(t => <li key={t}>{t}</li>)}
       </ul>
-      
+
       <button onClick={actions.clearTodos}>Clear</button>
-      <button onClick={this.addTodo}>AddTodo</button>
+      <button onClick={::this.addTodo}>Add</button>
+      <input value={this.state.text} onChange={::this.handleUpdate} />
     </div>
   }
 }
