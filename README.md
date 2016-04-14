@@ -9,26 +9,28 @@ in the same place. Example:
 // actions.js
 import { Reaction, groupActions, packageActions } from 'redux-reaction'
 
-const initialState = { test: true }
+const initialState = { todos: [] }
 
-const setTest = Reaction('set test', {
-  reducer (state, action) {
+const addTodo = Reaction('add todo', {
+  action (item) {
+    return item
+  },
+  reducer (state, { payload }) {
     return {
-      test: true
+      todos: [
+        ...state.todos,
+        payload
+      ]
     }
   }
 })
 
-const unsetTest = Reaction('unset test', {
-  reducer (state, action) {
-    return {
-      test: false
-    }
-  }
+const clearTodos = Reaction('clear todos', {
+  reducer: () => initialState
 })
 
-const test = groupActions({ setTest, unsetTest }, initialState)
-export default packageActions({ test })
+const todo = groupActions({ addTodo, clearTodos }, initialState)
+export default packageActions({ todo })
 ```
 
 ```js
@@ -50,15 +52,36 @@ const selector = state => state
 
 @connect(selector, re.action)
 export default class App extends Component {
-  constructor () {
-    const { actions, test } = this.props
-
-    assert(test === true)
-    actions.unsetTest()
-    assert(test === false)
+  constructor (props, context) {
+    super(props, context)
+    
+    this.state = {
+      text: ''
+    }
+  }
+  
+  handleText (event) {
+    this.setState({
+      text: event.target.value
+    })
+  }
+  
+  addTodo () {
+    this.props.actions.addTodo(this.state.text)
   }
 
   render () {
-    return <h1>Hello redux-reaction</h1>
+    const { actions, todo } = this.props
+    
+    return <div>
+      <ul>
+        {todo.todos.map(t => <li key={t}>{t}</li>)}
+      </ul>
+
+      <button onClick={actions.clearTodos}>Clear</button>
+      <button onClick={::this.addTodo}>Add</button>
+      <input value={this.state.text} onChange={::this.handleUpdate} />
+    </div>
   }
 }
+```
