@@ -40,5 +40,5 @@ export function packageActions (creators) {
 
   const ducer = combineReducers(_reducers)
 
-  return { action, ducer }
+  return { action, ducer, creators: _actions }
 }
