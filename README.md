@@ -1,5 +1,11 @@
 # redux-reaction
 
+## DON'T USE THIS.
+
+It totally misses the point of Redux. If you want this approach just use MobX.
+
+---
+
 `npm install --save-dev redux-reaction`
 
 Goes one step further than redux-actions by placing your actions and reducers
